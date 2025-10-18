@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: supplement
+  datasource:
+    url: jdbc:h2:mem:suppdb
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
