@@ -11,4 +11,7 @@ public class MarqueDto {
     private String pays;
     private String Suppnom;
 
+    private double prix;
+
+
 }

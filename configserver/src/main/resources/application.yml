@@ -1,0 +1,20 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Mohamedkhayati/config-repo.git
+          default-label: main
+          clone-on-start: true
+          timeout: 10
+          force-pull: true
+logging:
+  level:
+    org.springframework: DEBUG

@@ -1,0 +1,44 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gatewayserver
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: r1
+              uri: lb://SUPPLEMENT
+              predicates:
+                - Path=/api/supplements/**
+            - id: r2
+              uri: lb://MARQUE
+              predicates:
+                - Path=/api/marques/**
+
+      lower-case-service-id: true
+
+  eureka:
+    client:
+      service-url:
+        defaultZone: 'http://localhost:8761/eureka/'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    gateway:
+      access: unrestricted
+
+eureka:
+  instance:
+    prefer-ip-address: true
