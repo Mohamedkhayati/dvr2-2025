@@ -19,6 +19,8 @@ public class MarqueServiceImpl implements MarqueService {
 
     @Override
     public APIResponseDto getMarqueById(Long id) {
+        String dname;
+
         Optional<Marque> optionalMarque = marqueRepository.findById(id);
         if (optionalMarque.isEmpty()) {
             return null; // Controller can handle this as 404
@@ -31,7 +33,13 @@ public class MarqueServiceImpl implements MarqueService {
         if (marque.getSuppnom() != null && !marque.getSuppnom().isEmpty()) {
             supplementDto = apiClient.getSupByCode(marque.getSuppnom());
         }
+        if (supplementDto == null){
+            dname="NOT AVAILABLE";
 
+        }
+        else{
+            dname = supplementDto.getSuppnom();
+    }
         // Build MarqueDto
         MarqueDto marqueDto = new MarqueDto(
                 marque.getId(),

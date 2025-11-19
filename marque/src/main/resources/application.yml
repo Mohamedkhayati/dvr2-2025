@@ -2,31 +2,75 @@ server:
   port: 8081
 
 spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+
+  # ---- CONFIG SERVER (optional) ----
+  config:
+    import: "optional:configserver:${CONFIG_SERVICE_URL:http://localhost:9999},optional:classpath:application-local.yml"
+
   application:
     name: marque
+
   datasource:
     url: jdbc:h2:mem:marquedb
     driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
   h2:
     console:
       enabled: true
+      path: /h2-console
+
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+
   cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
     config:
-      enabled: false
+      enabled: true          # keep true – we use optional import
+      fail-fast: false
+      retry:
+        max-attempts: 6
+        initial-interval: 1000
+        max-interval: 2000
     discovery:
-      enabled: true  # Change to false if you don’t want Eureka registration
+      enabled: true          # set false to disable Eureka completely
 
 eureka:
   client:
     service-url:
-      defaultZone: 'http://localhost:8761/eureka/'
+      defaultZone: ${DISCOVERY_SERVICE_URL:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
 
 management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: "*"
+  endpoint:
+    refresh:
+      enabled: true        # needed for @RefreshScope
+
+logging:
+  level:
+    org.springframework: INFO
+    com.med: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
