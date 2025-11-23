@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class APIResponseDto {
-    private  MarqueDto marqueDto;
     private SupplementDto supplementDto;
+    private  MarqueDto marqueDto;
+
 }

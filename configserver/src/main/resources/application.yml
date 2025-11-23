@@ -20,11 +20,7 @@ spring:
           clone-on-start: true
           timeout: 10
           force-pull: true
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+
 logging:
   level:
     org.springframework: DEBUG
